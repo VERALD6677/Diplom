@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    container_name: web
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/netology_pd_diplom/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=diplom_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+  celery:
+    build: .
+    command: celery -A netology_pd_diplom worker -l info
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data: null
