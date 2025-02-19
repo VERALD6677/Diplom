@@ -15,7 +15,13 @@ urlpatterns = [
     # ... your other URL patterns
     re_path(r'^social-auth/', include('social_django.urls', namespace='social')),
 ]
+urlpatterns = [
+    path('sentry-debug/', views.trigger_error),
+]
 
+# views.py
+def trigger_error(request):
+    division_by_zero = 1 / 0
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('backend.urls', namespace='backend')),
