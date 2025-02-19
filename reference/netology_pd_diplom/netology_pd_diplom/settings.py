@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'django_rest_passwordreset',
     'backend',
     'django.contrib.postgres',
-    'social_django',  # Added
+    'social_django',  
+    'baton',
+    'django.contrib.admin',
+    'baton.autodiscover',
 ]
 
 MIDDLEWARE = [
@@ -185,3 +188,61 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'YOUR_FACEBOOK_APP_SECRET'  # Replace with your Fa
 
 LOGIN_REDIRECT_URL = '/'  # Change this to where you want to redirect after login
 LOGOUT_REDIRECT_URL = '/' # Where to go after logging out
+from baton.ai import AIModels
+
+BATON = {
+    'SITE_HEADER': 'Моя админка',
+    'SITE_TITLE': 'Администрирование',
+    'INDEX_TITLE': 'Панель управления',
+    'SUPPORT_HREF': 'https://github.com/otto-torino/django-baton/issues',
+    'COPYRIGHT': '© 2025 Моя компания',
+    'POWERED_BY': '<a href="https://www.example.com">Example.com</a>',
+    'CONFIRM_UNSAVED_CHANGES': True,
+    'SHOW_MULTIPART_UPLOADING': True,
+    'ENABLE_IMAGES_PREVIEW': True,
+    'CHANGELIST_FILTERS_IN_MODAL': True,
+    'CHANGELIST_FILTERS_ALWAYS_OPEN': False,
+    'CHANGELIST_FILTERS_FORM': True,
+    'CHANGEFORM_FIXED_SUBMIT_ROW': True,
+    'MENU_ALWAYS_COLLAPSED': False,
+    'MENU_TITLE': 'Навигация',
+    'MESSAGES_TOASTS': False,
+    'GRAVATAR_DEFAULT_IMG': 'retro',
+    'GRAVATAR_ENABLED': True,
+    'LOGIN_SPLASH': '/static/img/login-bg.jpg',
+    'FORCE_THEME': None,
+    'SEARCH_FIELD': {
+        'label': 'Поиск...',
+        'url': '/search/',
+    },
+    'BATON_CLIENT_ID': 'ваш_client_id',
+    'BATON_CLIENT_SECRET': 'ваш_client_secret',
+    'IMAGE_PREVIEW_WIDTH': 200,
+    'AI': {
+        "MODELS": "myapp.foo.bar",  # или используйте отдельные настройки для каждой модели
+        "IMAGES_MODEL": AIModels.BATON_DALL_E_3,
+        "VISION_MODEL": AIModels.BATON_GPT_4O_MINI,
+        "SUMMARIZATIONS_MODEL": AIModels.BATON_GPT_4O_MINI,
+        "TRANSLATIONS_MODEL": AIModels.BATON_GPT_4O,
+        'ENABLE_TRANSLATIONS': True,
+        'ENABLE_CORRECTIONS': True,
+        'CORRECTION_SELECTORS': ["textarea", "input[type=text]:not(.vDateField):not([name=username]):not([name*=subject_location])"],
+        "CORRECTIONS_MODEL": AIModels.BATON_GPT_3_5_TURBO,
+    },
+    'MENU': (
+        {'type': 'title', 'label': 'Основное', 'apps': ('auth',)},
+        {
+            'type': 'app',
+            'name': 'auth',
+            'label': 'Аутентификация',
+            'icon': 'fa fa-lock',
+            'models': (
+                {'name': 'user', 'label': 'Пользователи'},
+                {'name': 'group', 'label': 'Группы'},
+            )
+        },
+        {'type': 'title', 'label': 'Контент', 'apps': ('myapp',)},
+        {'type': 'model', 'label': 'Статьи', 'name': 'article', 'app': 'myapp'},
+        {'type': 'free', 'label': 'Google', 'url': 'http://www.google.it', 'perms': ('myapp.add_article',)},
+    )
+}

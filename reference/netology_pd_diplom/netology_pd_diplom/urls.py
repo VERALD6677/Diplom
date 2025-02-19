@@ -2,6 +2,14 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from django.urls import include, re_path
+from baton.autodiscover import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('baton/', include('baton.urls')),
+]
+
 
 urlpatterns = [
     # ... your other URL patterns
