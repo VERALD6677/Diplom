@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_rest_passwordreset',
     'backend',
     'django.contrib.postgres',
+    'social_django',  # Added
 ]
 
 MIDDLEWARE = [
@@ -58,8 +59,7 @@ ROOT_URLCONF = 'netology_pd_diplom.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,6 +67,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',  # Added
+                'social_django.context_processors.login_redirect', # Added
             ],
         },
     },
@@ -138,7 +140,7 @@ EMAIL_USE_SSL = True
 SERVER_EMAIL = EMAIL_HOST_USER
 
 REST_FRAMEWORK = {
-    
+
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 40,
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
@@ -147,7 +149,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
 
     ),
-    
+
     'DEFAULT_AUTHENTICATION_CLASSES': (
 
         'rest_framework.authentication.TokenAuthentication',
@@ -168,3 +170,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = "redis://redis:6379"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+# Social Auth Settings
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'YOUR_GOOGLE_CLIENT_ID'  # Replace with your Google Client ID
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'YOUR_GOOGLE_CLIENT_SECRET'  # Replace with your Google Client Secret
+SOCIAL_AUTH_FACEBOOK_KEY = 'YOUR_FACEBOOK_APP_ID'  # Replace with your Facebook App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'YOUR_FACEBOOK_APP_SECRET'  # Replace with your Facebook App Secret
+
+LOGIN_REDIRECT_URL = '/'  # Change this to where you want to redirect after login
+LOGOUT_REDIRECT_URL = '/' # Where to go after logging out

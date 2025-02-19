@@ -24,6 +24,15 @@ from backend.tasks import do_import
 from django.urls import reverse
 from rest_framework.test import APITestCase
 from backend.models import User, ConfirmEmailToken, Order, OrderItem, ProductInfo
+from rest_framework import throttling
+
+class RegisterAccount(APIView):
+    throttle_classes = [throttling.UserRateThrottle]  
+   
+
+class BasketView(APIView):
+    throttle_classes = [throttling.UserRateThrottle]
+   
 
 
 class UserRegistrationTests(APITestCase):
